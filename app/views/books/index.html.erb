@@ -5,7 +5,17 @@
 		<%= render 'users/profile', user: @user %>
 
 		<h2>New book</h2>
-		<%= render 'books/newform', book: @book %>
+		<% if @new_book.errors.any? %>
+		<div id="error_explanation">
+			<h3><%= @new_book.errors.count %>error prohibited this obj from being saved:</h3>
+			<ul>
+				<% @new_book.errors.full_messages.each do |message| %>
+				<li><%= message %></li>
+				<% end %>
+			</ul>
+		</div>
+	<% end %>
+		<%= render 'books/newform', book: @new_book %>
 
 	</div>
 
