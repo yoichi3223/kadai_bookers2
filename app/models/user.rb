@@ -14,8 +14,8 @@ class User < ApplicationRecord
   # has_many :followers, through: :reverse_of_relationships, source: :user
     has_many :follower, class_name: "Relationship", foreign_key: "user_id", dependent: :destroy
     has_many :followed, class_name: "Relationship", foreign_key: "follow_id", dependent: :destroy
-    has_many :following_user, through: :follower, source: :user
-    has_many :follower_user, through: :followed, source: :follow
+    has_many :following_user, through: :follower, source: :follow
+    has_many :follower_user, through: :followed, source: :user
 def follow(other_user)
     # unless self == other_user
       self.follower.find_or_create_by(follow_id: other_user)
@@ -30,6 +30,22 @@ def follow(other_user)
   def following?(other_user)
     self.follower.find_by(follow_id: other_user.id)
   end
+
+     def User.search(search, user_or_book, how_search)
+        if user_or_book == "1"
+            if how_search == "1"
+                    User.where(['name LIKE ?', "#{search}"])
+            elsif how_search == "2"
+                    User.where(['name LIKE ?', "#{search}%"])
+            elsif how_search == "3"
+                    User.where(['name LIKE ?', "%#{search}"])
+            elsif how_search == "4"
+                    User.where(['name LIKE ?', "%#{search}%"])
+            else
+                    User.all
+            end
+         end
+    end
 
   #バリデーションは該当するモデルに設定する。エラーにする条件を設定できる。
   validates :name,presence: true,length: { in: 2..20 }

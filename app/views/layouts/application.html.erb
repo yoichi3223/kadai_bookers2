@@ -10,8 +10,12 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <style>
       #notice{
-        margin-bottom: 30px;
+        line-height: : 100px;
         color: green;
+      }
+      .search-field{
+        text-align: center;
+        padding-top:10px;
       }
     </style>
   </head>
@@ -40,9 +44,18 @@
 
       </div>
     </header>
-
     <div class="container">
       <p id="notice"><%= notice %></p>
+      <% if user_signed_in? %>
+      <div class ="search-field">
+    <%= form_tag(search_path, :method => 'get') do %>
+  <%= text_field_tag :search %>
+    <%= select_tag(:option, options_for_select([["user", "1"],["book","2"]]))%>
+ <%= select_tag(:choice, options_for_select([["完全一致", "1" ],["前方一致", "2" ],["後方一致", "3" ],["部分一致", "4" ]])) %>
+    <%= submit_tag '検索' %>
+<% end %>
+<% end %>
+</div>
 <%= yield %>
     </div>
 
